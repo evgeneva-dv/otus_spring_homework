@@ -1,26 +1,20 @@
 package ru.otus.spring.homework;
 
-import com.opencsv.exceptions.CsvException;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import ru.otus.spring.homework.domain.Question;
-import ru.otus.spring.homework.service.QuestionService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import ru.otus.spring.homework.service.MainService;
+import ru.otus.spring.homework.service.TestingService;
 
-import java.io.IOException;
-import java.util.List;
-
+@ComponentScan
 public class Main {
 
     public static void main(String[] args) {
 
-        var context = new ClassPathXmlApplicationContext("/spring-context.xml");
+        var context = new AnnotationConfigApplicationContext(Main.class);
 
-        var questionService =  context.getBean(QuestionService.class);
+        var mainService =  context.getBean(MainService.class);
 
-        List<Question> questions = questionService.getAllQuestion();
-
-        questions.forEach(x -> System.out.println("Question: " + x.getTextQuestion() + " Variants of answer: " + x.getVariantsAnswer()));
+        mainService.run();
 
     }
 }

@@ -14,11 +14,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Question implements Serializable {
 
+    @CsvBindByName(column = "id")
+    private Integer id;
+
     @CsvBindByName(column = "question")
     private String textQuestion;
 
-    @CsvBindByName(column = "answer")
+    @CsvBindByName(column = "answers")
     private String variantsAnswer;
 
+    @CsvBindByName(column = "trueAnswer")
+    private String trueAnswer;
 
 }
