@@ -18,8 +18,4 @@ public class QuestionServiceImpl implements QuestionService{
     public List<Question> getAllQuestion() {
         return questionDao.findAll();
     }
-
-    public Question getQuestion(Integer id) {
-        return questionDao.findAllById(id);
-    }
 }

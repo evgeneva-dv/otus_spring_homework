@@ -16,32 +16,27 @@ import java.util.Scanner;
 public class TestingServiceImpl implements TestingService{
 
     private final QuestionServiceImpl questionService;
-    private final GreetingService greetingService;
     @Value("${countTrueAnswer}")
     private Long rightCountTrueAnswer;
 
     @Override
     public List<Answer> testing() {
 
-        Integer size = questionService.getAllQuestion().size();
+        List<Question> questions = questionService.getAllQuestion();
         List<Answer> answers = new ArrayList<>();
         String inputAnswerString;
         Answer answer;
         Scanner in = new Scanner(System.in);
 
         System.out.println("Enter one variants of answer");
-        for (int i = 1; i<=size; i++) {
-            try {
-                Question question = questionService.getQuestion(i);
-                System.out.println("Question: " + question.getTextQuestion());
-                System.out.println("Variants of answer: " + question.getVariantsAnswer());
-                inputAnswerString = in.next();
-                answer=new Answer(i,inputAnswerString,inputAnswerString.toUpperCase().equals(question.getTrueAnswer()));
-                answers.add(answer);
-                System.out.println(answer.isTrueAnswer());
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
+
+        for (Question question : questions) {
+            System.out.println("Question: " + question.getTextQuestion());
+            System.out.println("Variants of answer: " + question.getVariantsAnswer());
+            inputAnswerString = in.next();
+            answer = new Answer(question.getId(), inputAnswerString, inputAnswerString.toUpperCase().equals(question.getTrueAnswer()));
+            answers.add(answer);
+            System.out.println(answer.isTrueAnswer());
         }
         in.close();
         return answers;
