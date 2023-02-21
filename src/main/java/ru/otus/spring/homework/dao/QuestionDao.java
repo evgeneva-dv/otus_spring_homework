@@ -5,5 +5,4 @@ import java.util.List;
 
 public interface QuestionDao {
     List<Question> findAll();
-    Question findAllById(Integer Id);
 }

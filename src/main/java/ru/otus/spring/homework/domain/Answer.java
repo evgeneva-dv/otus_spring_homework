@@ -12,4 +12,8 @@ public class Answer {
     private String answer;
     private boolean isTrueAnswer;
 
+    public Answer(Integer idQuestion, String answer) {
+        this.idQuestion = idQuestion;
+        this.answer = answer;
+    }
 }

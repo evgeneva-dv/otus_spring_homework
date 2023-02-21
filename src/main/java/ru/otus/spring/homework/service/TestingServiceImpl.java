@@ -2,6 +2,7 @@ package ru.otus.spring.homework.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.objenesis.instantiator.android.AndroidSerializationInstantiator;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.homework.domain.Answer;
 import ru.otus.spring.homework.domain.Question;
@@ -22,23 +23,21 @@ public class TestingServiceImpl implements TestingService{
     @Override
     public List<Answer> testing() {
 
-        List<Question> questions = questionService.getAllQuestion();
-        List<Answer> answers = new ArrayList<>();
-        String inputAnswerString;
+        var questions = questionService.getAllQuestion();
+        var answers = new ArrayList<Answer>();
         Answer answer;
-        Scanner in = new Scanner(System.in);
+        var userInput = new Scanner(System.in);
 
         System.out.println("Enter one variants of answer");
 
         for (Question question : questions) {
-            System.out.println("Question: " + question.getTextQuestion());
-            System.out.println("Variants of answer: " + question.getVariantsAnswer());
-            inputAnswerString = in.next();
-            answer = new Answer(question.getId(), inputAnswerString, inputAnswerString.toUpperCase().equals(question.getTrueAnswer()));
+            outputQuestion(question);
+            answer = new Answer(question.getId(), userInput.nextLine());
+            answer.setTrueAnswer(checkAnswer(question,answer));
             answers.add(answer);
             System.out.println(answer.isTrueAnswer());
         }
-        in.close();
+        userInput.close();
         return answers;
     }
 
@@ -52,6 +51,17 @@ public class TestingServiceImpl implements TestingService{
         else {
             System.out.println(user.getFirstName() +", you failed the test");
         }
+    }
+
+    private void outputQuestion (Question question) {
+        System.out.println("Question: " + question.getTextQuestion());
+        System.out.println("Variants of answer: " + question.getVariantsAnswer());
+
+    }
+
+    private boolean checkAnswer (Question question, Answer answer) {
+        var isTrueAnswer = answer.getAnswer().toUpperCase().equals(question.getTrueAnswer());
+        return isTrueAnswer;
     }
 
 }

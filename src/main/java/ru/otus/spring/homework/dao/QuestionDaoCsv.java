@@ -31,11 +31,4 @@ public class QuestionDaoCsv implements QuestionDao {
         }
     }
 
-    @Override
-    public Question findAllById(Integer id) {
-        List<Question> questions = findAll();
-        Question question = questions.stream().filter(q -> id.equals(q.getId())).findFirst().orElse(null);
-        return question;
-    }
-
 }

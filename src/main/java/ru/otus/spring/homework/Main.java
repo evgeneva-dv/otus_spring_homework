@@ -3,7 +3,6 @@ package ru.otus.spring.homework;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import ru.otus.spring.homework.service.MainService;
-import ru.otus.spring.homework.service.TestingService;
 
 @ComponentScan
 public class Main {
