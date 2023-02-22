@@ -11,15 +11,14 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @SpringJUnitConfig(Main.class)
 class QuestionResourceLoaderTest {
 
-    @Autowired
     private final QuestionResourceLoader questionResourceLoader;
 
     @Test
-    void shouldReturnCorrectFile (QuestionResourceLoader questionResourceLoader) {
+    void shouldReturnCorrectFile () {
         File file = questionResourceLoader.getFile();
         assertEquals(file.getName(),"questions.csv");
         assertNotNull(file);

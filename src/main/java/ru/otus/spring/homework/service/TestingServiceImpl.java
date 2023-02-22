@@ -2,8 +2,9 @@ package ru.otus.spring.homework.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.objenesis.instantiator.android.AndroidSerializationInstantiator;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.homework.configs.AppProps;
 import ru.otus.spring.homework.domain.Answer;
 import ru.otus.spring.homework.domain.Question;
 import ru.otus.spring.homework.domain.User;
@@ -16,8 +17,10 @@ import java.util.Scanner;
 @RequiredArgsConstructor
 public class TestingServiceImpl implements TestingService{
 
+    private final MessageSource messageSource;
+    private final AppProps props;
     private final QuestionServiceImpl questionService;
-    @Value("${countTrueAnswer}")
+    @Value("${application.countTrueAnswer}")
     private Long rightCountTrueAnswer;
 
     @Override
@@ -28,7 +31,7 @@ public class TestingServiceImpl implements TestingService{
         Answer answer;
         var userInput = new Scanner(System.in);
 
-        System.out.println("Enter one variants of answer");
+        System.out.println(messageSource.getMessage("manual", null, props.getLocale()));
 
         for (Question question : questions) {
             outputQuestion(question);
@@ -46,17 +49,18 @@ public class TestingServiceImpl implements TestingService{
 
         Long countTrueAnswer = answers.stream().filter(a->a.isTrueAnswer()).count();
         if (countTrueAnswer>=rightCountTrueAnswer) {
-            System.out.println(user.getFirstName() +", you have successfully passed the test");
+            System.out.println(messageSource.getMessage("success", new String[]{user.getFirstName()}, props.getLocale()));
         }
         else {
-            System.out.println(user.getFirstName() +", you failed the test");
+            System.out.println(messageSource.getMessage("fail", new String[]{user.getFirstName()}, props.getLocale()));
         }
     }
 
     private void outputQuestion (Question question) {
-        System.out.println("Question: " + question.getTextQuestion());
-        System.out.println("Variants of answer: " + question.getVariantsAnswer());
-
+        System.out.println(messageSource.getMessage("question", null, props.getLocale()));
+        System.out.println(question.getTextQuestion());
+        System.out.println(messageSource.getMessage("variants.answer", null, props.getLocale()));
+        System.out.println(question.getVariantsAnswer());
     }
 
     private boolean checkAnswer (Question question, Answer answer) {

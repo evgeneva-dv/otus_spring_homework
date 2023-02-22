@@ -11,13 +11,12 @@ import java.io.File;
 import java.io.IOException;
 
 @Component
-@PropertySource({"classpath:application.properties"})
 @RequiredArgsConstructor
 public class QuestionResourceLoader implements ResourceLoaderAware {
 
     private ResourceLoader resourceLoader;
 
-    @Value("${path}")
+    @Value("${application.path}")
     private String resourcePath;
 
     @Override
@@ -29,10 +28,11 @@ public class QuestionResourceLoader implements ResourceLoaderAware {
 
         try {
             File file = resourceLoader.getResource(resourcePath).getFile();
+            file.exists();
             return file;
 
         } catch (IOException e) {
-            System.out.println("Fail");
+            System.out.println("Fail 1");
             return null;
         }
     }
