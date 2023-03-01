@@ -3,7 +3,6 @@ package ru.otus.spring.homework.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ResourceLoaderAware;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +31,6 @@ public class QuestionResourceLoader implements ResourceLoaderAware {
             return file;
 
         } catch (IOException e) {
-            System.out.println("Fail 1");
             return null;
         }
     }

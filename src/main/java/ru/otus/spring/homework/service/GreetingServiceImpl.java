@@ -14,15 +14,15 @@ public class GreetingServiceImpl implements GreetingService{
 
     private final MessageSource messageSource;
     private final AppProps props;
+    private final IOService ioService;
 
     @Override
     public User greet() {
         User user = new User();
-        Scanner in = new Scanner(System.in);
-        System.out.println(messageSource.getMessage("name.first",null, props.getLocale()));
-        user.setFirstName(in.next());
-        System.out.println(messageSource.getMessage("name.last",null, props.getLocale()));
-        user.setLastName(in.next());
+        ioService.out(messageSource.getMessage("name.first",null, props.getLocale()));
+        user.setFirstName(ioService.readString());
+        ioService.out(messageSource.getMessage("name.last",null, props.getLocale()));
+        user.setLastName(ioService.readString());
         return user;
     }
 }

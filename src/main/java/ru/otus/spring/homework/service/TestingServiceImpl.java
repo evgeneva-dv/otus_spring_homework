@@ -11,7 +11,6 @@ import ru.otus.spring.homework.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +19,9 @@ public class TestingServiceImpl implements TestingService{
     private final MessageSource messageSource;
     private final AppProps props;
     private final QuestionServiceImpl questionService;
+    private final IOService ioService;
+
+
     @Value("${application.countTrueAnswer}")
     private Long rightCountTrueAnswer;
 
@@ -29,18 +31,16 @@ public class TestingServiceImpl implements TestingService{
         var questions = questionService.getAllQuestion();
         var answers = new ArrayList<Answer>();
         Answer answer;
-        var userInput = new Scanner(System.in);
 
-        System.out.println(messageSource.getMessage("manual", null, props.getLocale()));
+        ioService.out(messageSource.getMessage("manual", null, props.getLocale()));
 
         for (Question question : questions) {
             outputQuestion(question);
-            answer = new Answer(question.getId(), userInput.nextLine());
+            answer = new Answer(question.getId(), ioService.readString());
             answer.setTrueAnswer(checkAnswer(question,answer));
             answers.add(answer);
-            System.out.println(answer.isTrueAnswer());
+            ioService.out(String.valueOf(answer.isTrueAnswer()));
         }
-        userInput.close();
         return answers;
     }
 
@@ -49,18 +49,18 @@ public class TestingServiceImpl implements TestingService{
 
         Long countTrueAnswer = answers.stream().filter(a->a.isTrueAnswer()).count();
         if (countTrueAnswer>=rightCountTrueAnswer) {
-            System.out.println(messageSource.getMessage("success", new String[]{user.getFirstName()}, props.getLocale()));
+            ioService.out(messageSource.getMessage("success", new String[]{user.getFirstName()}, props.getLocale()));
         }
         else {
-            System.out.println(messageSource.getMessage("fail", new String[]{user.getFirstName()}, props.getLocale()));
+            ioService.out(messageSource.getMessage("fail", new String[]{user.getFirstName()}, props.getLocale()));
         }
     }
 
     private void outputQuestion (Question question) {
-        System.out.println(messageSource.getMessage("question", null, props.getLocale()));
-        System.out.println(question.getTextQuestion());
-        System.out.println(messageSource.getMessage("variants.answer", null, props.getLocale()));
-        System.out.println(question.getVariantsAnswer());
+        ioService.out(messageSource.getMessage("question", null, props.getLocale()));
+        ioService.out(question.getTextQuestion());
+        ioService.out(messageSource.getMessage("variants.answer", null, props.getLocale()));
+        ioService.out(question.getVariantsAnswer());
     }
 
     private boolean checkAnswer (Question question, Answer answer) {
