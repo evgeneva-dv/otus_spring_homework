@@ -16,4 +16,22 @@ public class Answer {
         this.idQuestion = idQuestion;
         this.answer = answer;
     }
+
+    @Override
+    public boolean equals (Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        Answer answer = (Answer) o;
+
+        if (getAnswer()==answer.getAnswer() || getIdQuestion() == answer.getIdQuestion() || isTrueAnswer()== answer.isTrueAnswer()) {
+            return true;
+        }
+
+        else {
+            return false;
+        }
+
+    }
 }
